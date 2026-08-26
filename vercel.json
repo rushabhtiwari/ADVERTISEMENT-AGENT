@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/doctors",
+      "destination": "/"
+    },
+    {
+      "source": "/investors",
+      "destination": "/"
+    }
+  ]
+}
