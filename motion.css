@@ -1631,8 +1631,8 @@ html[data-theme="dark"] .fleet-card.is-complete h3 { color: #fff; }
   .report-journey-heading { margin-bottom: 45px; text-align: left; }
   .report-journey-heading h2 { font-size: 43px; letter-spacing: -2.3px; }
   .report-journey-heading > p:last-child { margin-left: 0; }
-  .report-journey-grid { grid-template-columns: 1fr; gap: 46px; }
-  .report-phone-carousel { width: 445px; max-width: none; left: 50%; margin: -55px 0 -45px; transform: translateX(-50%) scale(.76); transform-origin: center; }
+  .report-journey-grid { grid-template-columns: minmax(0,1fr); gap: 46px; }
+  .report-phone-carousel { width: 445px; max-width: none; left: auto; margin: -55px 0 -45px; transform: scale(.76); transform-origin: center; }
   .report-download-card { width: 100%; max-width: 360px; justify-self: center; padding: 31px 26px; text-align: center; }
   .report-download-card h3 { font-size: 36px; }
   .report-process { margin: 0 0 86px; padding: 0 0 78px; }
@@ -1646,6 +1646,9 @@ html[data-theme="dark"] .fleet-card.is-complete h3 { color: #fff; }
   .fleet-path { display: none; }
   .fleet-card:nth-of-type(n) { grid-area: auto; min-height: 190px; }
   .fleet-card:not(:last-child)::after { content: '↓'; position: absolute; z-index: 3; left: 50%; bottom: -27px; color: var(--green); font-size: 18px; font-weight: 800; transform: translateX(-50%); }
+}
+@media (max-width: 380px) {
+  .report-phone-carousel { transform: scale(.7); margin-block: -73px -63px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .report-slide,.fleet-card,.fleet-card::before { animation: none !important; transition-duration: .01ms !important; }
