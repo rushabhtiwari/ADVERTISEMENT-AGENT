@@ -25,12 +25,12 @@ const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 
 function logo() { return `<a href="/" class="logo" aria-label="Finnovate home"><img class="brand-logo-image" src="/assets/brand/finnovate-logo-header-white.png" alt="Finnovate, Be Financially Fit"></a>`; }
 function button(text, cls = 'button primary') { return `<button class="${cls}" data-open-modal>${text}<span>${ICONS.arrow}</span></button>`; }
-function themeToggle() { return `<button class="theme-toggle" type="button" aria-label="Switch to light mode"><span class="theme-toggle-icon" aria-hidden="true">☀</span><span class="theme-toggle-label">Light mode</span></button>`; }
+function themeToggle() { return `<button class="theme-toggle" type="button" aria-label="Switch to dark mode"><span class="theme-toggle-icon" aria-hidden="true">☾</span><span class="theme-toggle-label">Dark mode</span></button>`; }
 
 function appShell(data, inner) {
   const audienceHref = data.theme === 'doctor' ? '/investors' : '/';
   const audienceLabel = data.theme === 'doctor' ? 'For investors' : 'For doctors';
-  const footer = `<footer class="doctor-footer"><div class="shell doctor-footer-grid"><div><div class="doctor-footer-logo">${logo()}</div><p>A structured, data-driven methodology for your financial health.</p><small>⌾ &nbsp; SEBI Registered Investment Advisor</small></div><nav><p>DIAGNOSIS</p><a href="#how">How it works</a><a href="#stories">Stories</a><a href="#why">Our approach</a></nav><div><p>OUR PROMISE</p><ul><li>We do not sell your personal data.</li><li>We do not ask for OTPs or passwords.</li><li>We are a fee-based advisory service.</li></ul></div><aside><b>Start with clarity</b><span>Your first step toward a calmer financial life.</span>${button('Start now', 'button primary')}</aside></div><div class="shell doctor-footer-bottom"><p>Finnovate Financial Services Pvt. Ltd. Investments are subject to market risks. Please read all related documents carefully before investing.</p><div><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><span>© 2026 Finnovate</span></div></div></footer>`
+  const footer = `<footer class="doctor-footer"><div class="shell doctor-footer-grid"><div><div class="doctor-footer-logo">${logo()}</div><p>A structured, data driven methodology for your financial health.</p><small>⌾ &nbsp; SEBI Registered Investment Advisor</small></div><nav><p>DIAGNOSIS</p><a href="#how">How it works</a><a href="#stories">Stories</a><a href="#why">Our approach</a></nav><div><p>OUR PROMISE</p><ul><li>We do not sell your personal data.</li><li>We do not ask for OTPs or passwords.</li><li>We are a fee based advisory service.</li></ul></div><aside><b>Start with clarity</b><span>Your first step toward a calmer financial life.</span>${button('Start now', 'button primary')}</aside></div><div class="shell doctor-footer-bottom"><p>Finnovate Financial Services Pvt. Ltd. Investments are subject to market risks. Please read all related documents carefully before investing.</p><div><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><span>© 2026 Finnovate</span></div></div></footer>`
   return `<header class="nav"><div class="shell nav-inner">${logo()}<nav><a href="#how">How it works</a><a href="#why">Why Finnovate</a><a href="#stories">Stories</a></nav><div class="nav-actions"><a class="audience-switch" href="${audienceHref}">${audienceLabel} <span>↗</span></a>${themeToggle()}${button('Talk to us', 'button nav-cta')}</div><button class="menu" type="button" aria-label="Open navigation" aria-controls="mobile-navigation" aria-expanded="false"><span class="menu-icon" aria-hidden="true">☰</span></button></div><div class="mobile-nav" id="mobile-navigation" aria-hidden="true"><nav><a href="#how">How it works</a><a href="#why">Why Finnovate</a><a href="#stories">Stories</a></nav><a class="mobile-audience" href="${audienceHref}">${audienceLabel} <span>↗</span></a>${themeToggle()}${button('Talk to us', 'button mobile-nav-cta')}</div></header>${inner}${footer}${chatbot()}${modal(data.theme)}`;
 }
 
@@ -53,15 +53,38 @@ function hero(data) {
  return `<main><section class="hero ${data.theme}"><div class="shell hero-grid"><div class="hero-copy"><h1>${data.title}</h1><p class="lead">${data.copy}</p><div class="hero-actions">${button(data.cta)}<a href="#how" class="text-link">See how it works <span>↓</span></a></div>${data.proof ? `<p class="trust-line">${data.proof}</p>` : ''}</div>${data.theme === 'doctor' ? doctorVisual() : reportVisual()}</div><section class="ticker" aria-label="Areas covered in your financial plan"><div class="ticker-intro"><strong>Every part, in one view.</strong></div><div class="ticker-window"><div class="ticker-track"><div class="ticker-set">${tickerSet}</div><div class="ticker-set" aria-hidden="true">${tickerSet}</div></div></div></section></section>`;
 }
 
+function reportJourneySection() {
+ const processSteps = [
+  ['Form or callback','Share the essentials in a short form, or ask our team to guide you through it.'],
+  ['24 to 48 hour preparation','Your details are organised and analysed before the personal review begins.'],
+  ['Retirement target clarity','We calculate the corpus and yearly savings required to stay on track.'],
+  ['Investment visibility','Your current investments are brought into one clear, connected view.'],
+  ['Insurance gap check','Income, expenses and lifestyle are checked against the cover you actually need.'],
+  ['Portfolio benchmark','Your investments are compared with relevant benchmarks to reveal what is working.'],
+  ['Financial health score','Six financial pillars combine into one structured score with strengths and gaps.'],
+  ['Recommendation and Tracking','You get an all in one tracker to monitor family level investments with benchmark comparison.']
+ ];
+ const pages = Array.from({length:12},(_,index) => {
+  const page = index + 1;
+  const number = String(page).padStart(2,'0');
+  const initialClass = index === 0 ? 'is-active' : index < 4 ? `is-next-${index}` : '';
+  return `<figure class="report-slide ${initialClass}" data-report-page="${index}" aria-hidden="${index===0?'false':'true'}"><img src="/assets/reports/financial-fitness-page-${number}.webp" alt="Financial fitness report page ${page} of 12" ${index===0?'fetchpriority="high"':'loading="lazy"'} decoding="async"></figure>`;
+ }).join('');
+ const processCards = processSteps.map((step,index) => `<article class="fleet-card" data-fleet-step="${index}"><span class="fleet-number">${String(index+1).padStart(2,'0')}</span><span class="fleet-check" aria-hidden="true">✓</span><h3>${step[0]}</h3><p>${step[1]}</p><small>${index===processSteps.length-1?'READY TO ACT':'PROCESSING'}</small></article>`).join('');
+ const processLinks = ['M225 94H275','M475 94H525','M725 94H775','M890 188V242','M775 336H725','M525 336H475','M275 336H225'].map((path,index) => `<path data-fleet-link="${index}" d="${path}"/>`).join('');
+ return `<section id="how" class="report-journey"><div class="shell"><section class="report-process" data-report-process><div class="report-process-heading reveal"><h2>See the complete picture<br><em>before you begin.</em></h2><p>Eight connected checks work together to turn your information into one clear plan.</p></div><div class="process-fleet" aria-label="Eight step financial report process"><svg class="fleet-path" viewBox="0 0 1000 430" preserveAspectRatio="none" aria-hidden="true"><defs><marker id="fleet-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z"/></marker></defs>${processLinks}</svg>${processCards}</div></section><div class="report-preview-heading reveal"><h2>From scattered details<br>to <em>a clear way forward.</em></h2><p>See the experience before you begin. Your final report is personal; this sample shows the structure, clarity and level of details you can expect.</p></div><div class="report-journey-grid"><div class="report-phone-carousel is-playing reveal-scale" data-report-carousel aria-label="Twelve page financial fitness report preview"><div class="report-phone-stage"><div class="report-phone-shell" aria-hidden="true"><span class="report-phone-speaker"></span><span class="report-phone-home"></span></div><div class="report-slide-deck">${pages}</div></div></div><div class="report-download-card reveal"><h3>Take a closer look.</h3><p>Explore the score, six financial areas, priority actions and a practical 90 day roadmap.</p><a class="button primary report-download-button" href="/output/pdf/finnovate-sample-financial-health-report.pdf" download="Finnovate-Financial-Fitness-Report.pdf">Download report <span aria-hidden="true">↓</span></a></div></div></div></section>`;
+}
+
 function investorPage() {
  const six = [['Goals','Are you actually on track?','goals.png'],['Tax','Where money quietly leaks.','cashflow-tax.png'],['Insurance','Gaps, overlaps, and mis selling.','insurance.png'],['Liabilities','What they really cost you.','practice-loans.png'],['Investments','Overlap, risk, and fit.','investing.png'],['Estate','Wills, nominees, continuity.','estate-legacy.png']];
  return appShell(investorData, hero(investorData) + `
  <section class="quiet-hook quiet-hook-flip shell reveal"><h2 class="hook-plain">Everyone who reviews your money gets paid when you act. <em>We don't.</em></h2><div class="hook-stage phase-front" data-hook-stage aria-hidden="true"><div class="hook-card"><div class="hook-face hook-front"><span>Everyone who reviews your money</span></div><div class="hook-face hook-back"><span>gets paid when you act.</span></div></div><div class="hook-merge"><span class="hook-chip hook-chip-a">Everyone who reviews your money</span><span class="hook-chip hook-chip-b">gets paid when you act.</span><em class="hook-final">We don't.</em></div></div></section>
- <section id="how" class="whole-section financial-tree-section"><div class="financial-tree-sticky"><div class="shell section-heading tree-heading"><h2>Returns tell one story.<br>Your financial health tells <em>the whole story.</em></h2></div><div class="shell financial-tree" aria-label="Six connected areas of financial health"><svg class="tree-lines" viewBox="0 0 1000 520" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="treeStroke" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#72df9a"/><stop offset=".5" stop-color="#009356"/><stop offset="1" stop-color="#0b4d3d"/></linearGradient><marker id="treeArrow" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0 0L6 3L0 6Z" fill="#0b4d3d"/></marker></defs><path class="tree-trunk" pathLength="1" marker-end="url(#treeArrow)" d="M500 12 C420 125 600 210 485 300 C410 370 540 440 500 505"/>${['M500 88 C430 88 385 76 300 76','M500 258 C570 258 615 258 700 258','M500 435 C430 435 385 445 300 445','M500 88 C570 88 615 76 700 76','M500 258 C430 258 385 258 300 258','M500 435 C570 435 615 445 700 445'].map((d,i)=>`<path class="tree-branch" data-tree-line="${i}" pathLength="1" d="${d}"/>`).join('')}</svg>${six.map((x,i)=>`<article class="tree-card tree-${i%2?'right':'left'} tree-slot-${i%3}" data-tree-card="${i}"><div><span>0${i+1}</span><h3>${x[0]}</h3><p>${x[1]}</p></div><img src="assets/framework/${x[2]}" alt="" aria-hidden="true" loading="lazy" decoding="async"></article>`).join('')}<div class="tree-pulse" aria-hidden="true"></div></div></div></section>
+ ${reportJourneySection()}
+ <section id="financial-health" class="whole-section financial-tree-section"><div class="financial-tree-sticky"><div class="shell section-heading tree-heading"><h2>Returns tell one story.<br>Your financial health tells <em>the whole story.</em></h2></div><div class="shell financial-tree" aria-label="Six connected areas of financial health"><svg class="tree-lines" viewBox="0 0 1000 520" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="treeStroke" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#72df9a"/><stop offset=".5" stop-color="#009356"/><stop offset="1" stop-color="#0b4d3d"/></linearGradient><marker id="treeArrow" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0 0L6 3L0 6Z" fill="#0b4d3d"/></marker></defs><path class="tree-trunk" pathLength="1" marker-end="url(#treeArrow)" d="M500 12 C420 125 600 210 485 300 C410 370 540 440 500 505"/>${['M500 88 C430 88 385 76 300 76','M500 258 C570 258 615 258 700 258','M500 435 C430 435 385 445 300 445','M500 88 C570 88 615 76 700 76','M500 258 C430 258 385 258 300 258','M500 435 C570 435 615 445 700 445'].map((d,i)=>`<path class="tree-branch" data-tree-line="${i}" pathLength="1" d="${d}"/>`).join('')}</svg>${six.map((x,i)=>`<article class="tree-card tree-${i%2?'right':'left'} tree-slot-${i%3}" data-tree-card="${i}"><div><span>0${i+1}</span><h3>${x[0]}</h3><p>${x[1]}</p></div><img src="assets/framework/${x[2]}" alt="" aria-hidden="true" loading="lazy" decoding="async"></article>`).join('')}<div class="tree-pulse" aria-hidden="true"></div></div></div></section>
  <section id="why" class="unbiased investor-promise"><img class="promise-seascape" src="assets/investors/lighthouse-compass-banner.png" alt="Lighthouse guiding across a calm sea towards a glowing compass" loading="lazy" decoding="async"><div class="lighthouse-beam" aria-hidden="true"></div><div class="sea-motion" aria-hidden="true"><i></i><i></i></div><div class="promise-vignette" aria-hidden="true"></div><div class="shell unbiased-inner"><h2>When every part connects,<br><em>the way forward becomes clear.</em></h2><p>Finnovate sells no products, earns no commissions, and makes nothing from what you invest in. Our only job is to show you where your money actually stands.</p>${button('Get my Portfolio review', 'button light')}</div></section>
  <section class="offer shell investor-next-step"><div class="section-heading"><h2>Everything you need<br>to <em>know.</em></h2></div><div class="next-step-route" aria-hidden="true"><span class="route-start"></span><i></i><span class="route-traveler"></span><span class="route-pin"><img src="assets/investors/next-step-compass-pin-3d.png" alt="" loading="lazy" decoding="async"></span></div><div class="deliverables"><article><h3>45 minute expert call</h3><p>A private, one to one review with a qualified expert who has no product agenda.</p></article><article><h3>9 page report</h3><p>Your complete financial picture, written plainly, ready to keep and revisit.</p></article><article><h3>Your top 3 fixes</h3><p>A 0 to 100 score and the clearest actions to take first.</p></article></div></section>
  <section id="stories" class="stories luxury-reviews investor-reviews"><div class="shell luxury-review-grid"><div class="review-intro"><h2>Not a louder opinion.<br><em>A clearer one.</em></h2><div class="review-nav"><button data-review-prev aria-label="Previous review">↑</button><button data-review-next aria-label="Next review">↓</button><span><b data-review-count>01</b> / 07</span></div></div><div class="review-orbit" tabindex="0" aria-label="Scrollable investor reviews"><svg class="review-curve" viewBox="0 0 330 650" aria-hidden="true"><path d="M250 15 C65 120 55 520 250 635"/><circle cx="178" cy="84" r="5"/><circle cx="108" cy="205" r="5"/><circle cx="88" cy="326" r="6"/><circle cx="108" cy="447" r="5"/><circle cx="178" cy="568" r="5"/></svg>${[
- ['“I thought my SIPs were fine. This showed I was under-saving for my biggest goal. The next steps were simple.”','Amrita S.','Mumbai','A'],
+ ['“I thought my SIPs were fine. This showed I was under saving for my biggest goal. The next steps were simple.”','Amrita S.','Mumbai','A'],
  ['“No product pushing. They showed what was clutter in my portfolio and what actually mattered.”','Rohit K.','Pune','R'],
  ['“Insurance gaps were a blind spot for me. Now I know the minimum protection I should have.”','Shreya M.','Nashik','S'],
  ['“It felt like a proper checkup. Clear score, clear gaps, and a clean plan. Worth more than ₹999.”','Vivek P.','Ahmedabad','V'],
@@ -84,12 +107,13 @@ function doctorPage() {
  ];
  return appShell(doctorData, hero(doctorData) + `
  <section class="quiet-hook quiet-hook-flip shell reveal"><h2 class="hook-plain">You started earning late. Your decisions now carry more weight. <em>Make each one count.</em></h2><div class="hook-stage phase-front" data-hook-stage aria-hidden="true"><div class="hook-card"><div class="hook-face hook-front"><span>You started earning late.</span></div><div class="hook-face hook-back"><span>Your decisions now carry more weight.</span></div></div><div class="hook-merge"><span class="hook-chip hook-chip-a">You started earning late.</span><span class="hook-chip hook-chip-b">Your decisions now carry more weight.</span><em class="hook-final">Make each one count.</em></div></div></section>
- <section id="how" class="doctor-journey"><div class="shell journey-card"><div class="journey-copy"><h2>The whole picture.</h2><p>Your financial life changes quickly. Your plan should move with it.</p></div><div class="journey-static-visual doctor-pop-scene"><div class="doctor-benefit-ring" aria-hidden="true"></div><span class="benefit-pill benefit-one">Financial clarity</span><span class="benefit-pill benefit-two">Better decisions</span><span class="benefit-pill benefit-three">Peace of mind</span><span class="benefit-pill benefit-four">Stronger future</span><img class="doctor-cutout" src="/assets/doctors/doctor-cutout-v2.png" alt="Confident doctor supported by a connected financial plan"></div></div></section>
+ ${reportJourneySection()}
+ <section id="whole-picture" class="doctor-journey"><div class="shell journey-card"><div class="journey-copy"><h2>The whole picture.</h2><p>Your financial life changes quickly. Your plan should move with it.</p></div><div class="journey-static-visual doctor-pop-scene"><div class="doctor-benefit-ring" aria-hidden="true"></div><span class="benefit-pill benefit-one">Financial clarity</span><span class="benefit-pill benefit-two">Better decisions</span><span class="benefit-pill benefit-three">Peace of mind</span><span class="benefit-pill benefit-four">Stronger future</span><img class="doctor-cutout" src="/assets/doctors/doctor-cutout-v2.png" alt="Confident doctor supported by a connected financial plan"></div></div></section>
  <section class="advantage-phone"><div class="shell phone-grid"><div><h2>Less time in spreadsheets.<br><em>More time where you matter.</em></h2><p>A financial system that runs quietly in the background, so you can focus on your patients and your practice.</p>${button('Start with a conversation')}</div><div class="adv-phone"><div class="adv-screen"><small>FINNOVATE / FOR DOCTORS</small><div class="adv-pie-stage" aria-hidden="true"><span class="adv-pie-shadow"></span><span class="adv-pie-depth"></span><span class="adv-pie-face"></span><span class="adv-pie-hub"></span></div><div class="advantage-carousel bubble-pop" aria-live="polite">${advantages.map((x,i)=>`<article class="adv-slide ${i===0?'active':''}"><p>${x}</p></article>`).join('')}</div><div class="adv-dots"><i class="active"></i><i></i><i></i></div></div></div></div></section>
  <section class="framework shell"><div class="section-heading"><h2>6 areas. <em>1 vital view.</em></h2></div><div class="doctor-pillars">${frameworkItems.map(x=>`<button class="doctor-pillar"><img src="/assets/framework/${x[2]}" alt="" aria-hidden="true" loading="lazy" decoding="async"><b>${x[0]}</b><small>${x[1]}</small></button>`).join('')}</div></section>
  <section class="doctor-proof"><div class="shell"><div class="proof-window"><div class="proof-track"><div class="proof-set"><div class="proof-stat"><strong>18+</strong><span>years</span></div><div class="proof-stat"><strong>3,500+</strong><span>families</span></div><div class="proof-stat"><strong>₹1,200 Cr+</strong><span>assets under advice</span></div></div><div class="proof-set" aria-hidden="true"><div class="proof-stat"><strong>18+</strong><span>years</span></div><div class="proof-stat"><strong>3,500+</strong><span>families</span></div><div class="proof-stat"><strong>₹1,200 Cr+</strong><span>assets under advice</span></div></div></div></div></div></section>
  <section id="stories" class="stories doctor-stories luxury-reviews"><div class="shell luxury-review-grid"><div class="review-intro"><h2>Doctors on <em>Clarity</em></h2><p class="review-support">Different specialties. Different goals.<br>One shared outcome: <strong>financial clarity.</strong></p><div class="review-nav"><button data-review-prev aria-label="Previous review">↑</button><button data-review-next aria-label="Next review">↓</button><span><b data-review-count>01</b> / 07</span></div></div><div class="review-orbit" tabindex="0" aria-label="Scrollable doctor reviews"><svg class="review-curve" viewBox="0 0 330 650" aria-hidden="true"><path d="M250 15 C65 120 55 520 250 635"/><circle cx="178" cy="84" r="5"/><circle cx="108" cy="205" r="5"/><circle cx="88" cy="326" r="6"/><circle cx="108" cy="447" r="5"/><circle cx="178" cy="568" r="5"/></svg>${[
- ['“I thought my SIPs were fine. This showed I was under-saving for my biggest goal. The next steps were simple.”','Dr. Amrita S.','Mumbai','A'],
+ ['“I thought my SIPs were fine. This showed I was under saving for my biggest goal. The next steps were simple.”','Dr. Amrita S.','Mumbai','A'],
  ['“No product pushing. They showed what was clutter in my portfolio and what actually mattered.”','Dr. Rohit K.','Pune','R'],
  ['“Insurance gaps were a blind spot for me. Now I know the minimum protection I should have.”','Dr. Shreya M.','Nashik','S'],
  ['“It felt like a proper checkup. Clear score, clear gaps, and a clean plan. Worth more than ₹999.”','Dr. Vivek P.','Ahmedabad','V'],
@@ -107,12 +131,12 @@ function faq(isDoctor=false) {
     ['I already have an adviser and a CA. Is this still useful?','Usually more so. Each of them sees one part of the picture clearly. Nobody has been asked to read all of it at once.'],
     ['Do I need to share bank or demat access?','No. No passwords, no OTPs, no account access. The onboarding form takes four minutes and asks for none of it.'],
     ['Who actually does the review?','An expert adviser at Finnovate, which has been advising for 18 years across more than 3,500 families. Not a call centre, and not an automated tool generating a score.'],
-    ['What do I actually get for ₹999?','A nine-page report scoring six areas of your finances, a health score out of 100, the three actions worth taking first, and a 45-minute one-to-one call with a SEBI-registered adviser who takes you through it.'],
-    ['How long does the whole thing take?','About four minutes to fill the form. We prepare the report within 24 to 48 hours. Then a 45-minute call at a time you choose.'],
-    ['My situation is complicated—business income, property, and multiple entities. Does this still work?','Yes. Complexity is usually where a single, connected view earns its keep the most. Tell us the shape of it on the form, and the adviser will work from that.']
+    ['What do I actually get for ₹999?','A nine page report scoring six areas of your finances, a health score out of 100, the three actions worth taking first, and a 45 minute one to one call with a SEBI registered adviser who takes you through it.'],
+    ['How long does the whole thing take?','About four minutes to fill the form. We prepare the report within 24 to 48 hours. Then a 45 minute call at a time you choose.'],
+    ['My situation is complicated, with business income, property, and multiple entities. Does this still work?','Yes. Complexity is usually where a single, connected view earns its keep the most. Tell us the shape of it on the form, and the adviser will work from that.']
   ];
   const doctorQs = [
-    ['Will you try to sell me anything on the call?','No. Finnovate is fee-only and earns no commission from any product. Nobody will ask you to switch funds, move money, or replace an existing adviser. The ₹999 payment covers the review, and nothing follows it.'],
+    ['Will you try to sell me anything on the call?','No. Finnovate is fee only and earns no commission from any product. Nobody will ask you to switch funds, move money, or replace an existing adviser. The ₹999 payment covers the review, and nothing follows it.'],
     ['Is ₹999 really all it costs?','Yes. One payment. The report is yours to keep, whatever you decide afterwards.'],
     ['I genuinely do not have time. How much of it does this take?','Four minutes to fill the form and 45 minutes on the call. Nothing else. Evening and weekend slots are available, and you pick the time.'],
     ['Do I need to gather documents beforehand?','No. Bring what you remember. If something is missing, the adviser will tell you what would sharpen the picture, but the review does not wait on paperwork.'],
@@ -135,7 +159,7 @@ function modal(theme) {
 
 function bindInteractions() {
   $$('button:not(.doctor-pillar)').forEach(button => {
-    if (button.closest('.faq-item') || button.matches('.menu,.chat-button,.chat-x,.modal-close,.review-nav button,.signboard-hit,.custom-select-trigger,.custom-select-option')) return;
+    if (button.closest('.faq-item') || button.matches('.menu,.chat-button,.chat-x,.modal-close,.review-nav button,.signboard-hit,.custom-select-trigger,.custom-select-option,[data-report-prev],[data-report-next],[data-report-toggle]')) return;
     const textNodes = [...button.childNodes].filter(node => node.nodeType === Node.TEXT_NODE && node.textContent.trim());
     if (!textNodes.length) return;
     const label = textNodes.map(node => node.textContent.trim()).join(' ');
@@ -161,7 +185,80 @@ function bindInteractions() {
     const nextTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
     setTheme(nextTheme);
   }));
-  setTheme(document.documentElement.dataset.theme || 'dark');
+  setTheme(document.documentElement.dataset.theme || 'light');
+  $$('[data-report-carousel]').forEach(carousel => {
+    const slides = $$('.report-slide',carousel), currentLabel = $('[data-report-current]',carousel);
+    const previousButton = $('[data-report-prev]',carousel), nextButton = $('[data-report-next]',carousel);
+    const toggleButton = $('[data-report-toggle]',carousel), toggleLabel = $('[data-report-toggle-label]',carousel);
+    const toggleIcon = $('[data-report-icon]',carousel), stateLabel = $('[data-report-state]',carousel);
+    const previewStage = $('.report-phone-stage',carousel);
+    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const rotationDelay = 1000, readingDelay = 9000;
+    let currentPage = 0, rotationTimer, readingTimer, transitionTimer;
+    let manuallyPaused = reducedMotion, interactionPaused = false, readingPaused = false;
+    const renderPage = (nextPage,direction=1) => {
+      const outgoingPage = currentPage;
+      currentPage = (nextPage + slides.length) % slides.length;
+      clearTimeout(transitionTimer);
+      slides.forEach((slide,index) => {
+        const active = index === currentPage;
+        const distance = (index - currentPage + slides.length) % slides.length;
+        slide.className = 'report-slide';
+        if (active) slide.classList.add('is-active');
+        else if (index === outgoingPage && outgoingPage !== currentPage) slide.classList.add('is-leaving',direction < 0 ? 'is-leaving-reverse' : 'is-leaving-forward');
+        else if (distance >= 1 && distance <= 3) slide.classList.add(`is-next-${distance}`);
+        slide.setAttribute('aria-hidden',String(!active));
+      });
+      transitionTimer = setTimeout(() => {
+        slides.forEach((slide,index) => {
+          if (!slide.classList.contains('is-leaving')) return;
+          slide.className = 'report-slide';
+          const distance = (index - currentPage + slides.length) % slides.length;
+          if (distance >= 1 && distance <= 3) slide.classList.add(`is-next-${distance}`);
+        });
+      },230);
+      if (currentLabel) currentLabel.textContent = String(currentPage + 1).padStart(2,'0');
+    };
+    const restartProgress = () => {
+      carousel.classList.remove('is-playing');
+      void carousel.offsetWidth;
+      carousel.classList.add('is-playing');
+    };
+    const applyPlayback = () => {
+      clearTimeout(rotationTimer);
+      const paused = manuallyPaused || interactionPaused || readingPaused || document.hidden;
+      carousel.classList.toggle('is-paused',paused);
+      carousel.classList.toggle('is-playing',!paused);
+      if (toggleButton) {
+        toggleButton.setAttribute('aria-pressed',String(manuallyPaused));
+        toggleButton.setAttribute('aria-label',manuallyPaused ? 'Resume automatic page preview' : 'Pause automatic page preview');
+      }
+      if (toggleLabel) toggleLabel.textContent = manuallyPaused ? 'Resume' : 'Pause';
+      if (toggleIcon) toggleIcon.textContent = manuallyPaused ? '▶' : 'Ⅱ';
+      if (stateLabel) stateLabel.textContent = manuallyPaused ? 'Paused for reading' : interactionPaused ? 'Holding this page' : readingPaused ? 'Reading pause · resumes shortly' : 'Auto playing';
+      if (!paused) {
+        restartProgress();
+        rotationTimer = setTimeout(() => { renderPage(currentPage + 1,1); applyPlayback(); },rotationDelay);
+      }
+    };
+    const moveManually = offset => {
+      clearTimeout(readingTimer);
+      readingPaused = true;
+      renderPage(currentPage + offset,offset);
+      readingTimer = setTimeout(() => { readingPaused = false; applyPlayback(); },readingDelay);
+      applyPlayback();
+    };
+    previousButton?.addEventListener('click',() => moveManually(-1));
+    nextButton?.addEventListener('click',() => moveManually(1));
+    toggleButton?.addEventListener('click',() => {
+      manuallyPaused = !manuallyPaused;
+      readingPaused = false;
+      clearTimeout(readingTimer);
+      applyPlayback();
+    });
+    document.addEventListener('visibilitychange',applyPlayback);
+    renderPage(0); applyPlayback();
+  });
   const setMobileMenu = open => {
     if (!navHeader || !menuButton || !mobileNav) return;
     navHeader.classList.toggle('mobile-open',open);
@@ -410,6 +507,49 @@ function bindInteractions() {
     },{passive:true});
     document.addEventListener('visibilitychange',() => document.hidden ? stopReviews() : startReviews());
   }
+  const reportProcess = $('[data-report-process]');
+  if (reportProcess) {
+    const fleetCards = $$('.fleet-card',reportProcess), fleetLinks = $$('[data-fleet-link]',reportProcess);
+    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let fleetTimers = [], fleetRunning = false;
+    fleetCards.forEach(card => { const status = $('small',card); if (status) status.dataset.idleLabel = status.textContent; });
+    const scheduleFleet = (callback,delay) => { const timer = setTimeout(callback,delay); fleetTimers.push(timer); return timer; };
+    const clearFleet = () => { fleetTimers.forEach(clearTimeout); fleetTimers = []; fleetRunning = false; };
+    const resetFleet = () => {
+      fleetCards.forEach(card => { card.classList.remove('is-working','is-complete'); const status = $('small',card); if (status) status.textContent = status.dataset.idleLabel; });
+      fleetLinks.forEach(link => link.classList.remove('is-complete'));
+    };
+    const completeFleetStep = index => {
+      if (!fleetRunning) return;
+      if (index >= fleetCards.length) {
+        scheduleFleet(() => { if (!fleetRunning) return; resetFleet(); scheduleFleet(() => completeFleetStep(0),520); },1800);
+        return;
+      }
+      const card = fleetCards[index], status = $('small',card);
+      card.classList.add('is-working');
+      if (status) status.textContent = 'IN PROGRESS';
+      scheduleFleet(() => {
+        if (!fleetRunning) return;
+        card.classList.remove('is-working');
+        card.classList.add('is-complete');
+        if (status) status.textContent = 'COMPLETE';
+        scheduleFleet(() => {
+          if (fleetLinks[index]) fleetLinks[index].classList.add('is-complete');
+          scheduleFleet(() => completeFleetStep(index+1),430);
+        },230);
+      },620);
+    };
+    const startFleet = () => {
+      if (fleetRunning) return;
+      if (reducedMotion) { fleetCards.forEach(card => card.classList.add('is-complete')); fleetLinks.forEach(link => link.classList.add('is-complete')); return; }
+      fleetRunning = true;
+      resetFleet();
+      scheduleFleet(() => completeFleetStep(0),350);
+    };
+    const stopFleet = () => { clearFleet(); resetFleet(); };
+    new IntersectionObserver(entries => entries.forEach(entry => entry.isIntersecting ? startFleet() : stopFleet()),{threshold:.18}).observe(reportProcess);
+    document.addEventListener('visibilitychange',() => document.hidden ? stopFleet() : startFleet());
+  }
   const doctorScene = $('.doctor-pop-scene');
   if (doctorScene) {
     let doctorFrame;
@@ -423,6 +563,6 @@ function bindInteractions() {
   const score = $('[data-live-score]');
   if (score) { let value = 61, direction = 1; setInterval(() => { value += direction; if (value >= 76 || value <= 61) direction *= -1; score.textContent = value; }, 180); }
 }
-document.documentElement.dataset.theme = localStorage.getItem('finnovate-theme') || 'dark';
+document.documentElement.dataset.theme = localStorage.getItem('finnovate-theme') || 'light';
 const page = location.pathname.toLowerCase().includes('investor') ? investorPage() : doctorPage();
 $('#app').innerHTML = page; bindInteractions();
