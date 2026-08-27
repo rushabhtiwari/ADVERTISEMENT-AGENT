@@ -396,16 +396,26 @@ function bindInteractions() {
   const hookStage = $('[data-hook-stage]');
   if (hookStage && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
     const hookPhases = ['phase-front','phase-back','phase-merge'], hookHolds = [2600,2900,3700];
-    let hookIndex = 0, hookTimer = null;
+    let hookIndex = 0, hookTimer = null, hookFirstEntry = true, hookFirstFlipTimer = null;
     const runHook = () => {
+      const isFirstFront = hookFirstEntry && hookIndex === 0;
       hookStage.classList.remove(...hookPhases);
       void hookStage.offsetWidth;
       hookStage.classList.add(hookPhases[hookIndex]);
-      hookTimer = setTimeout(() => { hookIndex = (hookIndex + 1) % hookPhases.length; runHook(); }, hookHolds[hookIndex]);
+      hookTimer = setTimeout(() => {
+        if (isFirstFront) {
+          hookFirstEntry = false;
+          hookStage.classList.add('first-flip-fast');
+          clearTimeout(hookFirstFlipTimer);
+          hookFirstFlipTimer = setTimeout(() => hookStage.classList.remove('first-flip-fast'), 800);
+        }
+        hookIndex = (hookIndex + 1) % hookPhases.length;
+        runHook();
+      }, isFirstFront ? 1750 : hookHolds[hookIndex]);
     };
     new IntersectionObserver(entries => entries.forEach(entry => {
       if (entry.isIntersecting) { if (!hookTimer) runHook(); }
-      else { clearTimeout(hookTimer); hookTimer = null; hookIndex = 0; hookStage.classList.remove(...hookPhases); hookStage.classList.add(hookPhases[0]); }
+      else { clearTimeout(hookTimer); clearTimeout(hookFirstFlipTimer); hookTimer = null; hookFirstFlipTimer = null; hookIndex = 0; hookFirstEntry = true; hookStage.classList.remove(...hookPhases,'first-flip-fast'); hookStage.classList.add(hookPhases[0]); }
     }), { threshold: .15 }).observe(hookStage);
   }
   const treeSection = $('.financial-tree-section');

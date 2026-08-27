@@ -1377,6 +1377,7 @@ html[data-theme="light"] footer .footer-grid > span { color: #63706c; }
 .quiet-hook-flip .hook-plain { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .hook-stage { position: relative; display: grid; place-items: center; min-height: clamp(196px, 26vw, 252px); perspective: 1500px; }
 .hook-card { position: relative; width: min(660px, 100%); min-height: clamp(180px, 24vw, 232px); transform-style: preserve-3d; transition: transform 1.05s cubic-bezier(.62,.02,.2,1), opacity .5s ease, scale .6s ease; }
+.hook-stage.first-flip-fast .hook-card { transition-duration: .72s,.5s,.6s; }
 .hook-face { position: absolute; inset: 0; display: grid; place-items: center; padding: clamp(26px, 4vw, 46px); border-radius: 22px; backface-visibility: hidden; -webkit-backface-visibility: hidden; text-align: center; }
 .hook-face span { font: 400 clamp(26px, 3.5vw, 44px)/1.04 var(--sans); font-weight: 700; letter-spacing: -1.7px; text-wrap: balance; }
 .hook-front { border: 1px solid rgba(0,147,86,.18); background: linear-gradient(150deg,#fff,#f1f8f3); color: var(--navy); box-shadow: 0 26px 55px rgba(38,54,67,.13); }
