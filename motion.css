@@ -20,6 +20,7 @@ img,svg { backface-visibility: hidden; }
 .text-link { position: relative; }.text-link::after { content: ''; position: absolute; right: 0; bottom: -4px; left: 0; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform .38s var(--premium-ease); }.text-link:hover::after { transform: scaleX(1); transform-origin: left; }
 .logo { transition: opacity .25s var(--premium-fast),transform .35s var(--premium-ease); }.logo:hover { opacity: .9; transform: translateY(-1px); }
 .brand-logo-image { display: block; width: 160px; height: auto; }
+h1, h2, h3 { text-transform: capitalize; }
 .mobile-nav { display: none; }
 .pricing-card,.framework,.journey-card,.doctor-difference,.ticker { transform: translateZ(0); }
 .reveal,.pillar-card,.deliverables article,.timeline article { transition-timing-function: var(--premium-ease); }

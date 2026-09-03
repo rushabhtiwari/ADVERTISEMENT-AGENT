@@ -24,9 +24,7 @@ const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 
 function logo(placement = 'header') {
-  const source = placement === 'footer'
-    ? '/assets/brand/finnovate-logo-brandkit-footer.png'
-    : '/assets/brand/finnovate-logo-brandkit-header.jpg';
+  const source = '/assets/brand/finnovate-logo-brandkit-footer.png';
   return `<a href="/" class="logo logo-${placement}" aria-label="Finnovate home"><img class="brand-logo-image" src="${source}" alt="Finnovate, Be Financially Fit"></a>`;
 }
 function button(text, cls = 'button primary') {
