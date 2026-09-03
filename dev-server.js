@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const root = __dirname;
-const port = 3000;
+const port = Number(process.env.PORT) || 3000;
 const rewrites = new Set(['/doctors', '/investors']);
 const contentTypes = {
   '.css': 'text/css; charset=utf-8',
