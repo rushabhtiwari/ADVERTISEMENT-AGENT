@@ -5,7 +5,7 @@ const ICONS = {
 const investorData = {
   eyebrow: '',
   title: 'An unbiased review of your entire financial life.',
-  copy: 'Nine pages. Six areas. One 45 minute conversation with a SEBI registered, fee only planner. No products, no switching, no commission.',
+  copy: 'Nine pages. Six areas. One 45-minute conversation with a SEBI-registered, fee-only planner (SEBI Registration Number: INA000010996). No products, no switching, no commission.',
   cta: 'Get Your Checkup 999',
   proof: '',
   theme: 'investor'
@@ -38,7 +38,7 @@ function appShell(data, inner) {
   const audienceHref = data.theme === 'doctor' ? '/investors' : '/';
   const audienceLabel = data.theme === 'doctor' ? 'For investors' : 'For doctors';
   const promises = ['Your financial information stays private and confidential.','We never ask for banking passwords or transaction OTPs.','Fee-only guidance, with no commission-led product recommendations.'];
-  const footer = `<footer class="doctor-footer"><div class="shell doctor-footer-grid footer-without-cta"><div><div class="doctor-footer-logo">${logo('footer')}</div><p>A structured, data driven methodology for your financial health.</p><small>⌾ &nbsp; SEBI Registered Investment Advisor</small></div><nav><p>DIAGNOSIS</p><a href="#how">How it works</a><a href="#stories">Stories</a><a href="#why">Our approach</a></nav><div><p>OUR PROMISES</p><ul>${promises.map(item=>`<li>${item}</li>`).join('')}</ul></div></div><div class="shell doctor-footer-bottom"><p>Finnovate Financial Services Pvt. Ltd. Investments are subject to market risks. Please read all related documents carefully before investing.</p><div><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><span>© 2026 Finnovate</span></div></div></footer>`
+  const footer = `<footer class="doctor-footer"><div class="shell doctor-footer-grid footer-without-cta"><div><div class="doctor-footer-logo">${logo('footer')}</div><p>A structured, data driven methodology for your financial health.</p><small>⌾ &nbsp; SEBI-Registered Investment Adviser (SEBI Registration Number: INA000010996)</small></div><nav><p>DIAGNOSIS</p><a href="#how">How it works</a><a href="#stories">Stories</a><a href="#why">Our approach</a></nav><div><p>OUR PROMISES</p><ul>${promises.map(item=>`<li>${item}</li>`).join('')}</ul></div></div><div class="shell doctor-footer-bottom"><p>Finnovate Financial Services Pvt. Ltd. Investments are subject to market risks. Please read all related documents carefully before investing.</p><div><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><span>© 2026 Finnovate</span></div></div></footer>`
   return `<header class="nav"><div class="shell nav-inner">${logo()}<nav><a href="#how">How it works</a><a href="#why">Why Finnovate</a><a href="#stories">Stories</a></nav><div class="nav-actions"><a class="audience-switch" href="${audienceHref}">${audienceLabel} <span>↗</span></a>${themeToggle()}${button('Talk to us', 'button nav-cta')}</div><button class="menu" type="button" aria-label="Open navigation" aria-controls="mobile-navigation" aria-expanded="false"><span class="menu-icon" aria-hidden="true">☰</span></button></div><div class="mobile-nav" id="mobile-navigation" aria-hidden="true"><nav><a href="#how">How it works</a><a href="#why">Why Finnovate</a><a href="#stories">Stories</a></nav><a class="mobile-audience" href="${audienceHref}">${audienceLabel} <span>↗</span></a>${themeToggle()}${button('Talk to us', 'button mobile-nav-cta')}</div></header>${inner}${footer}${chatbot()}${modal(data.theme)}`;
 }
 
@@ -144,7 +144,7 @@ function faq(isDoctor=false) {
     ['How much time does the assessment take?','The initial assessment takes around four minutes to complete.'],
     ['Is my information kept confidential?','Your financial information is handled privately for the purpose of preparing your Financial Fitness Checkup.'],
     ['Will you calculate my FI number and required yearly investment?',"Yes. You'll get your target corpus and the yearly fresh investment needed to reach it."],
-    ['What is Finnovative?','We are SEBI registered (SEBI Registration Number: INA000010996), a tech-enabled wealth management firm operating since 2007, managing assets for thousands of families across India and globally.'],
+    ['What is Finnovative?','We are a SEBI-registered, tech-enabled wealth management firm (SEBI Registration Number: INA000010996), operating since 2007 and managing assets for thousands of families across India and globally.'],
     ['Do i need to prepare a lot of documents before starting?','You begin with a short assessment. You can also download the Finnovate app to share the complete financial picture with us, before the call. This will make the analysis more in-depth and faster.']
   ];
   const doctorQs = [
@@ -152,7 +152,7 @@ function faq(isDoctor=false) {
     ['How much time does the assessment take?','The initial assessment takes around four minutes to complete.'],
     ['Is my information kept confidential?','Your financial information is handled privately for the purpose of preparing your Financial Fitness Checkup.'],
     ['Do I need to prepare a lot of documents before starting?','You begin with a short assessment. You can also download the Finnovate app to share the complete financial picture with us, before the call. This will make the analysis more in-depth and faster.'],
-    ['What is Finnovate?','We are a SEBI Registered tech-enabled wealth management firm operating since 2007, managing assets for thousands of families across India and globally.'],
+    ['What is Finnovate?','We are a SEBI-registered, tech-enabled wealth management firm (SEBI Registration Number: INA000010996), operating since 2007 and managing assets for thousands of families across India and globally.'],
     ['What if I already have an advisor or a bank RM?','This checkup acts as a brilliant second opinion. Many clients discover hidden fees or inadequate insurance that their bank RMs missed.']
   ];
   const qs = isDoctor ? doctorQs : investorQs;
