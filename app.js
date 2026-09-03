@@ -1,173 +1,12 @@
-const ICONS = {
-  arrow: '↗', check: '✓', plus: '+', shield: '✦', close: '×', chat: '◌'
-};
-
-const investorData = {
-  eyebrow: '',
-  title: 'An unbiased review of your entire financial life.',
-  copy: 'Nine pages. Six areas. One 45-minute conversation with a SEBI-registered, fee-only planner (SEBI Registration Number: INA000010996). No products, no switching, no commission.',
-  cta: 'Get Your Checkup 999',
-  proof: '',
-  theme: 'investor'
-};
-
-const doctorData = {
-  eyebrow: '',
-  title: 'India’s Financial Health Check,<br><em>Built for Doctors</em>',
-  copy: 'Helping doctors assess their complete financial health across six key areas, with a personalised score, 9-page report, and expert review',
-  cta: 'Get Your Checkup 999',
-  proof: '',
-  theme: 'doctor'
-};
+/**
+ * Finnovate — behaviour layer.
+ *
+ * Page markup is rendered server-side by PHP (index.php + inc/*.php).
+ * This file keeps only the interactive behaviour, unchanged from the original app.js.
+ */
 
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
-
-function logo(placement = 'header') {
-  const source = '/assets/brand/finnovate-logo-brandkit-footer.png';
-  return `<a href="/" class="logo logo-${placement}" aria-label="Finnovate home"><img class="brand-logo-image" src="${source}" alt="Finnovate, Be Financially Fit"></a>`;
-}
-function button(text, cls = 'button primary') {
-  const classes = cls.split(/\s+/);
-  const arrow = classes.includes('primary') || classes.includes('light') ? '' : `<span>${ICONS.arrow}</span>`;
-  return `<button class="${cls}" data-open-modal>${text}${arrow}</button>`;
-}
-function themeToggle() { return `<button class="theme-toggle" type="button" aria-label="Switch to dark mode"><span class="theme-toggle-icon" aria-hidden="true">☾</span><span class="theme-toggle-label">Dark mode</span></button>`; }
-
-function appShell(data, inner) {
-  const audienceHref = data.theme === 'doctor' ? '/investors' : '/';
-  const audienceLabel = data.theme === 'doctor' ? 'For investors' : 'For doctors';
-  const promises = ['Your financial information stays private and confidential.','We never ask for banking passwords or transaction OTPs.','Fee-only guidance, with no commission-led product recommendations.'];
-  const footer = `<footer class="doctor-footer"><div class="shell doctor-footer-grid footer-without-cta"><div><div class="doctor-footer-logo">${logo('footer')}</div><p>A structured, data driven methodology for your financial health.</p><small>⌾ &nbsp; SEBI-Registered Investment Adviser (SEBI Registration Number: INA000010996)</small></div><nav><p>DIAGNOSIS</p><a href="#how">How it works</a><a href="#stories">Stories</a><a href="#why">Our approach</a></nav><div><p>OUR PROMISES</p><ul>${promises.map(item=>`<li>${item}</li>`).join('')}</ul></div></div><div class="shell doctor-footer-bottom"><p>Finnovate Financial Services Pvt. Ltd. Investments are subject to market risks. Please read all related documents carefully before investing.</p><div><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><span>© 2026 Finnovate</span></div></div></footer>`
-  return `<header class="nav"><div class="shell nav-inner">${logo()}<nav><a href="#how">How it works</a><a href="#why">Why Finnovate</a><a href="#stories">Stories</a></nav><div class="nav-actions"><a class="audience-switch" href="${audienceHref}">${audienceLabel} <span>↗</span></a>${themeToggle()}${button('Talk to us', 'button nav-cta')}</div><button class="menu" type="button" aria-label="Open navigation" aria-controls="mobile-navigation" aria-expanded="false"><span class="menu-icon" aria-hidden="true">☰</span></button></div><div class="mobile-nav" id="mobile-navigation" aria-hidden="true"><nav><a href="#how">How it works</a><a href="#why">Why Finnovate</a><a href="#stories">Stories</a></nav><a class="mobile-audience" href="${audienceHref}">${audienceLabel} <span>↗</span></a>${themeToggle()}${button('Talk to us', 'button mobile-nav-cta')}</div></header>${inner}${footer}${chatbot()}${modal(data.theme)}`;
-}
-
-function reportVisual() {
-  return `<div class="report-visual reveal-scale" aria-label="Illustration of a financial health report"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit orbit-three"></div><div class="report-sheet back-sheet"></div><div class="report-sheet"><div class="report-top"><span>FINNOVATE / PRIVATE</span></div><h3>Your financial<br>health report</h3><div class="score"><small>YOUR SCORE</small><strong data-live-score>76</strong><i>/100</i></div><div class="mini-bars" aria-label="Financial health chart"><span></span><span></span><span></span><span></span><span></span></div><div class="report-foot">Clarity is a strategy.</div></div><span class="floating-pill pill-a"><b>Goals</b></span><span class="floating-pill pill-b">✦ <b>Unbiased</b></span></div>`;
-}
-
-function heroFitnessReport() {
- const rows = [['Goal Planning',78,'#009b62'],['Budgeting & Tax',81,'#08a665'],['Loan Management',100,'#009b62'],['Insurance',38,'#d25b39'],['Investment Planning',55,'#ffb82e'],['Estate Planning',20,'#c94f30']];
- return `<div class="hero-fitness-report" aria-hidden="true"><div class="hero-report-head"><div><small>FINANCIAL FITNESS REPORT</small><b>Finnovate</b></div><span>Live · Today</span></div><div class="hero-report-profile"><b>Your financial snapshot</b><small>Designed for a busy medical professional</small></div><div class="hero-report-body"><div class="hero-report-score"><div class="hero-score-ring" style="--hero-score:259deg"><strong data-hero-score>72</strong><small>/100</small></div><span>Live score</span></div><div class="hero-report-bars">${rows.map((row,i)=>`<div style="--metric:${row[1]}%;--metric-color:${row[2]};--metric-delay:${i*.13}s"><span>${row[0]} <b>${row[1]}</b></span><i></i></div>`).join('')}</div></div><p class="hero-priority-label">TOP 3 PRIORITY ACTIONS</p><div class="hero-priorities"><article><b>1</b><div><small>INSURANCE</small><strong>Increase term cover by ₹1.5 Cr</strong></div></article><article><b>2</b><div><small>INVESTMENT PLANNING</small><strong>Consolidate 14 schemes to reduce overlap</strong></div></article><article><b>3</b><div><small>ESTATE PLANNING</small><strong>Create a will and update nominees</strong></div></article></div><div class="hero-report-foot"><span>Finnovate Financial Services</span><span>Interactive preview</span></div></div>`;
-}
-
-function doctorVisual() {
- return `<div class="doctor-visual reveal-scale"><div class="pulse p1"></div><div class="pulse p2"></div><div class="doctor-orbit"><span>+</span><span>₹</span><span>✦</span></div><div class="phone" tabindex="0" aria-label="Hover to preview your Financial Fitness Report"><div class="phone-notch"></div><div class="phone-screen"><small>FINNOVATE CARE</small><h3>Your plan is<br><em>on track.</em></h3><div class="heart-line">⌁⌁⌁⌁⌁⌁⌁</div><div class="next-card"><small>YOUR FINANCIAL</small><b>Fitness Report</b><span>Live score preview</span></div></div></div>${heroFitnessReport()}<svg class="hero-steth hero-steth-front" viewBox="0 0 340 440" aria-hidden="true" focusable="false"><g class="steth-outline"><path d="M68 110C40 144 42 210 86 250C98 260 112 264 122 262"/><path d="M278 170C268 214 212 252 158 261C144 263 132 264 122 262"/><path d="M122 262C106 284 88 302 70 316C48 334 20 336 12 316C4 296 18 280 40 280"/></g><g class="steth-core"><path d="M68 110C40 144 42 210 86 250C98 260 112 264 122 262"/><path d="M278 170C268 214 212 252 158 261C144 263 132 264 122 262"/><path d="M122 262C106 284 88 302 70 316C48 334 20 336 12 316C4 296 18 280 40 280"/></g><circle class="steth-tip" cx="68" cy="110" r="7"/><circle class="steth-tip" cx="278" cy="170" r="7"/><circle class="steth-bell" cx="54" cy="278" r="14"/><circle class="steth-bell-inner" cx="54" cy="278" r="6"/></svg></div>`;
-}
-
-function hero(data) {
- const tickerItems = ['Goals', 'Tax', 'Investments', 'Insurance', 'Estate Planning'];
- const tickerSet = tickerItems.map(item => `<span>${item}</span>`).join('');
- return `<main><section class="hero ${data.theme}"><div class="shell hero-grid"><div class="hero-copy"><h1>${data.title}</h1><p class="lead">${data.copy}</p><div class="hero-actions">${button(data.cta)}<a href="#how" class="text-link">See how it works <span>↓</span></a></div>${data.proof ? `<p class="trust-line">${data.proof}</p>` : ''}</div>${data.theme === 'doctor' ? doctorVisual() : reportVisual()}</div><section class="ticker" aria-label="Areas covered in your financial plan"><div class="ticker-intro"><strong>Every part, in one view.</strong></div><div class="ticker-window"><div class="ticker-track"><div class="ticker-set">${tickerSet}</div><div class="ticker-set" aria-hidden="true">${tickerSet}</div></div></div></section></section>`;
-}
-
-function reportJourneySection(isDoctor=false) {
- const processSteps = [
-  ['An In-depth Diagnosis','We spend the first 24–48 hours understanding every answer you give. So your 45 minutes is spent on findings, not on gathering information.'],
-  ['Retirement Target Clarity','In the meeting, we calculate your retirement target corpus and the yearly savings required to stay on track.'],
-  ['Investment Visibility','We help you download our app and fetch your existing investments so you can see everything in one place.'],
-  ['Insurance Gap Check','Based on your income, expenses and lifestyle, we suggest adequate term and health cover.'],
-  ['Portfolio Performance','See how your investments have actually performed, and whether that performance is doing the job your goals need it to do.'],
-  ['Estate Planning','We review how your assets are held and who they pass to. So your wealth reaches the right people, in the way you intended.'],
-  ['Financial Health Score','You receive a structured score based on the 6 pillars of financial fitness showing strengths and gaps.'],
-  ['Recommendation and Tracking','You get an all-in-one tracker to monitor family-level investments with benchmark comparison.']
- ];
- const pages = Array.from({length:12},(_,index) => {
-  const page = index + 1;
-  const number = String(page).padStart(2,'0');
-  const initialClass = index === 0 ? 'is-active' : index < 4 ? `is-next-${index}` : '';
-  return `<figure class="report-slide ${initialClass}" data-report-page="${index}" aria-hidden="${index===0?'false':'true'}"><img src="/assets/reports/financial-fitness-page-${number}.webp" alt="Financial fitness report page ${page} of 12" ${index===0?'fetchpriority="high"':'loading="lazy"'} decoding="async"><span class="report-privacy-mask mask-one" aria-hidden="true"></span><span class="report-privacy-mask mask-two" aria-hidden="true"></span><span class="report-privacy-mask mask-three" aria-hidden="true"></span></figure>`;
- }).join('');
- const processCards = processSteps.map((step,index) => `<article class="fleet-card${index === 6 ? ' fleet-card-highlight' : ''}" data-fleet-step="${index}"><span class="fleet-number">${index+1}</span><h3>${step[0]}</h3><p>${step[1]}</p></article>`).join('');
- return `<section id="how" class="report-journey ${isDoctor ? 'doctor-report-journey' : ''}"><div class="shell"><section class="report-process"><div class="report-process-heading reveal"><h2>How we build your<br><em>Financial Fitness Report</em></h2><p>See how we turn your numbers into a clear score, insights, and a focused action plan.</p></div><div class="process-fleet" aria-label="Eight step financial report process">${processCards}</div></section><div class="report-preview-heading reveal"><h2>Preview your<br><em>Financial Fitness Report</em></h2><p>The same 9-page PDF your advisor prepares is based entirely on your numbers, not templates.</p></div><div class="report-journey-grid"><div class="report-phone-carousel is-playing reveal-scale" data-report-carousel aria-label="Twelve page financial fitness report preview"><div class="report-phone-stage"><div class="report-phone-shell" aria-hidden="true"><span class="report-phone-speaker"></span><span class="report-phone-home"></span></div><div class="report-slide-deck">${pages}</div></div></div><div class="report-download-cta reveal">${button('Get Your Report - 999','button primary report-download-button')}</div></div></div></section>`;
-}
-
-function investorPage() {
- const six = [
-  ['Goal Planning','Is your money aligned with what you want it to achieve?','goals.png'],
-  ['Budgeting & Tax','Is your income being used as efficiently as it could be?','cashflow-tax.png'],
-  ['Loan Management','Are your liabilities helping or holding back your plans?','practice-loans.png'],
-  ['Insurance','Is what you have built properly protected?','insurance.png'],
-  ['Investment Planning','Are your investments performing, diversified and allocated the way they should be?','investing.png'],
-  ['Estate Planning','Is your wealth organised for the people it is meant for?','estate-legacy.png']
- ];
- return appShell(investorData, hero(investorData) + `
-<section class="investor-next-actions"><div class="shell"><div class="next-actions-heading reveal"><h2>What will you do, in 3 steps</h2></div><div class="next-actions-card reveal" aria-label="What you will do in three steps"><div class="next-actions-line" aria-hidden="true"></div><article class="next-action-step"><span class="next-action-number">1</span><div class="next-action-icon"><img src="/assets/investors/step-checkup-hourglass-realistic.png" alt="" aria-hidden="true"></div><div><h3>Start Your Financial Checkup</h3><p>Pay ₹999 securely and begin your Financial Fitness Checkup.</p></div></article><article class="next-action-step"><span class="next-action-number">2</span><div class="next-action-icon"><img src="/assets/investors/step-review-analysis-realistic.png" alt="" aria-hidden="true"></div><div><h3>Share Your Financial Snapshot</h3><p>You fill a short form (or get a callback). Our team reviews your numbers within 24-48 hours.</p></div></article><article class="next-action-step"><span class="next-action-number">3</span><div class="next-action-icon"><img src="/assets/investors/step-action-plan-realistic.png" alt="" aria-hidden="true"></div><div><h3>Review Your Financial Position</h3><p>Receive your Financial Fitness Score, 9-page personalised report and three priority actions, then walk through them in a 45-minute one-to-one expert review.</p></div></article></div></div></section>
- ${reportJourneySection()}
- <section id="financial-health" class="investor-health-grid-section"><div class="shell"><div class="section-heading investor-health-heading reveal"><h2>Returns tell one part,<br>Your financial health tells <em>the whole story.</em></h2></div><div class="investor-health-grid" aria-label="Six connected areas of financial health">${six.map(x=>`<article class="investor-health-card reveal"><div><h3>${x[0]}</h3><p>${x[1]}</p></div><img src="assets/framework/${x[2]}" alt="" aria-hidden="true" loading="lazy" decoding="async"></article>`).join('')}</div></div></section>
- <section id="why" class="checkup-details"><div class="shell"><div class="checkup-form-card"><h2>What we ask in the checkup form</h2><p>It takes exactly 4 minutes. You'll need a rough estimate of your finances. (No exact account details needed.)</p><ul><li>Basic income and expense ranges</li><li>How much you save monthly</li><li>Lumpsum estimates of investments</li><li>Existing health &amp; life cover amounts</li><li>Target retirement age &amp; major goals</li><li>Any outstanding loans</li></ul></div><div class="cost-of-ignorance"><p>46% people do not have enough Emergency Fund <small>(source FinnFit quiz)</small><br>Without that buffer, one hospital bill or job loss can jeopardise your family’s future.</p></div></div></section>
- <section id="stories" class="stories luxury-reviews investor-reviews"><div class="shell luxury-review-grid"><div class="review-intro"><h2>Not a louder opinion.<br><em>A clearer one.</em></h2><div class="review-nav"><button data-review-prev aria-label="Previous review">↑</button><button data-review-next aria-label="Next review">↓</button><span><b data-review-count>01</b> / 07</span></div></div><div class="review-orbit" tabindex="0" aria-label="Scrollable investor reviews"><svg class="review-curve" viewBox="0 0 330 650" aria-hidden="true"><path d="M250 15 C65 120 55 520 250 635"/><circle cx="178" cy="84" r="5"/><circle cx="108" cy="205" r="5"/><circle cx="88" cy="326" r="6"/><circle cx="108" cy="447" r="5"/><circle cx="178" cy="568" r="5"/></svg>${[
- ['“I thought my SIPs were fine. This showed I was under saving for my biggest goal. The next steps were simple.”','Amrita S.','Mumbai','A'],
- ['“No product pushing. They showed what was clutter in my portfolio and what actually mattered.”','Rohit K.','Pune','R'],
- ['“Insurance gaps were a blind spot for me. Now I know the minimum protection I should have.”','Shreya M.','Nashik','S'],
- ['“It felt like a proper checkup. Clear score, clear gaps, and a clean plan. Worth more than ₹999.”','Vivek P.','Ahmedabad','V'],
- ['“My CA handles tax and my bank pushes products. Someone finally looked at everything, with nothing to sell.”','Ananya R.','Bengaluru','A'],
- ['“They pinpointed overlapping funds and unnecessary fees. In 45 minutes, I had total clarity on what to fix.”','Karan D.','Delhi NCR','K'],
- ['“Direct, unbiased, and completely transparent. The roadmap gave my family real confidence in our finances.”','Nikhil T.','Hyderabad','N']
- ].map((x,i)=>`<article class="orbit-review" data-review-index="${i}"><span class="review-number">0${i+1}</span><blockquote>${x[0]}</blockquote><figcaption><span class="review-avatar">${x[3]}</span><span><b>${x[1]}</b><small>${x[2]}</small></span></figcaption></article>`).join('')}</div></div></section>
- ${pricing('₹999','A complete, honest read on your money in one 45 minute session.', 'Get Your Checkup')}${faq()}</main>`);
-}
-
-function doctorPage() {
- const frameworkItems = [
-  ['Goal Planning','Are your investments aligned with your goal?','goals.png'],
-  ['Budgeting & Tax','Are your savings, emergency fund and debt levels sufficient?','cashflow-tax.png'],
-  ['Loan Management','Is your current loan burden manageable?','practice-loans.png'],
-  ['Insurance','Do you have enough term and health cover for the protection you actually need?','insurance.png'],
-  ['Investment Planning','Are your investments performing, diversified and allocated the way they should be?','investing.png'],
-  ['Estate Planning','Is your wealth arranged to reach the right people, the way you intend it to?','estate-legacy.png']
- ];
- return appShell(doctorData, hero(doctorData) + `
-<section class="investor-next-actions doctor-next-actions"><div class="shell"><div class="next-actions-heading reveal"><h2>What will you do, in 3 steps</h2></div><div class="next-actions-card reveal" aria-label="What you will do in three steps"><div class="next-actions-line" aria-hidden="true"></div><article class="next-action-step"><span class="next-action-number">1</span><div class="next-action-icon"><img src="/assets/investors/step-checkup-hourglass-realistic.png" alt="" aria-hidden="true"></div><div><h3>Start Your Financial Checkup</h3><p>Pay ₹999 securely and begin your Financial Fitness Checkup.</p></div></article><article class="next-action-step"><span class="next-action-number">2</span><div class="next-action-icon"><img src="/assets/investors/step-review-analysis-realistic.png" alt="" aria-hidden="true"></div><div><h3>Share Your Financial Snapshot</h3><p>You fill a short form (or get a callback). Our team reviews your numbers within 24-48 hours.</p></div></article><article class="next-action-step"><span class="next-action-number">3</span><div class="next-action-icon"><img src="/assets/investors/step-action-plan-realistic.png" alt="" aria-hidden="true"></div><div><h3>Review Your Financial Position</h3><p>Receive your Financial Fitness Score, 9-page personalised report and three priority actions, then walk through them in a 45-minute one-to-one expert review.</p></div></article></div></div></section>
- ${reportJourneySection(true)}
- <section id="whole-picture" class="doctor-medical-planning"><div class="shell doctor-medical-card"><div class="doctor-medical-copy reveal"><span class="doctor-medical-badge">FINNOVATE · FOR DOCTORS</span><h2>Financial Planning for<br>Medical Professionals</h2><ul><li>Doctor-centric investment portfolios</li><li>Professional indemnity &amp; health insurance</li><li>Tax planning for clinical income</li></ul>${button('Review My Financial Position')}</div><div class="doctor-medical-visual reveal-scale"><img src="/assets/doctors/doctor-cutout-v2.png" alt="Doctor supported by specialist financial planning"></div></div></section>
- <section class="framework shell"><div class="section-heading"><h2>6 areas. <em>1 vital view.</em></h2></div><div class="doctor-pillars">${frameworkItems.map(x=>`<button class="doctor-pillar"><img src="/assets/framework/${x[2]}" alt="" aria-hidden="true" loading="lazy" decoding="async"><b>${x[0]}</b><small>${x[1]}</small></button>`).join('')}</div></section>
- <section class="doctor-proof"><div class="shell"><div class="proof-window"><div class="proof-track"><div class="proof-set"><div class="proof-stat"><strong>18+</strong><span>years</span></div><div class="proof-stat"><strong>3,500+</strong><span>families</span></div><div class="proof-stat"><strong>₹1,200 Cr+</strong><span>assets under advice</span></div></div><div class="proof-set" aria-hidden="true"><div class="proof-stat"><strong>18+</strong><span>years</span></div><div class="proof-stat"><strong>3,500+</strong><span>families</span></div><div class="proof-stat"><strong>₹1,200 Cr+</strong><span>assets under advice</span></div></div></div></div></div></section>
- <section id="stories" class="stories doctor-stories luxury-reviews"><div class="shell luxury-review-grid"><div class="review-intro"><h2>Doctors on <em>Clarity</em></h2><p class="review-support">Different specialties. Different goals.<br>One shared outcome: <strong>financial clarity.</strong></p><div class="review-nav"><button data-review-prev aria-label="Previous review">↑</button><button data-review-next aria-label="Next review">↓</button><span><b data-review-count>01</b> / 07</span></div></div><div class="review-orbit" tabindex="0" aria-label="Scrollable doctor reviews"><svg class="review-curve" viewBox="0 0 330 650" aria-hidden="true"><path d="M250 15 C65 120 55 520 250 635"/><circle cx="178" cy="84" r="5"/><circle cx="108" cy="205" r="5"/><circle cx="88" cy="326" r="6"/><circle cx="108" cy="447" r="5"/><circle cx="178" cy="568" r="5"/></svg>${[
- ['“I thought my SIPs were fine. This showed I was under saving for my biggest goal. The next steps were simple.”','Dr. Amrita S.','Mumbai','A'],
- ['“No product pushing. They showed what was clutter in my portfolio and what actually mattered.”','Dr. Rohit K.','Pune','R'],
- ['“Insurance gaps were a blind spot for me. Now I know the minimum protection I should have.”','Dr. Shreya M.','Nashik','S'],
- ['“It felt like a proper checkup. Clear score, clear gaps, and a clean plan. Worth more than ₹999.”','Dr. Vivek P.','Ahmedabad','V'],
- ['“My CA handles tax and my bank pushes products. Someone finally looked at everything, with nothing to sell.”','Dr. Ananya R.','Bengaluru','A'],
- ['“They pinpointed overlapping funds and unnecessary fees. In 45 minutes, I had total clarity on what to fix.”','Dr. Karan D.','Delhi NCR','K'],
- ['“Direct, unbiased, and completely transparent. The roadmap gave my family real confidence in our finances.”','Dr. Nikhil T.','Hyderabad','N']
- ].map((x,i)=>`<article class="orbit-review" data-review-index="${i}"><span class="review-number">0${i+1}</span><blockquote>${x[0]}</blockquote><figcaption><span class="review-avatar">${x[3]}</span><span><b>${x[1]}</b><small>${x[2]}</small></span></figcaption></article>`).join('')}</div></div></section>
- ${doctorCheckupPricing()}${faq(true)}</main>`);
-}
-
-function pricing(price, subtitle, label) { return `<section class="pricing"><div class="shell pricing-card"><div><h2>${price}</h2><p>${subtitle}</p></div><div class="price-includes"><span>${ICONS.check} Clear next steps</span><span>${ICONS.check} Private & confidential</span><span>${ICONS.check} No product sales</span></div><div>${button(label, 'button light')}</div></div></section>`; }
-function doctorCheckupPricing() { return `<section id="why" class="doctor-checkup-pricing"><div class="shell doctor-checkup-card"><span class="doctor-fee-label">ONE-TIME FEE</span><div class="doctor-checkup-main"><h2>The Financial Health<br>Checkup</h2><p class="doctor-checkup-price">₹999 <small>only</small></p><ul><li>Comprehensive Financial Health Score</li><li>Savings &amp; Protection Gap Analysis</li><li>Priority 'Top 3 Actions' List</li><li>1:1 Expert Review Call (45 mins)</li></ul>${button('Pay ₹999 Securely','button primary doctor-pay-button')}<p class="doctor-privacy-note">100% Data Privacy guaranteed. No spam.</p></div></div></section>`; }
-function doctorDifference() { return `<section class="doctor-difference"><svg class="difference-stethoscope" viewBox="0 0 240 500" aria-hidden="true"><path d="M54 12v112c0 62 116 62 116 0V18M55 119c-40 53-34 129 29 152 73 26 105 84 62 145-27 38-79 28-79-16 0-38 50-55 76-26"/><circle cx="69" cy="404" r="23"/><circle cx="69" cy="404" r="10"/></svg><div class="difference-grid" aria-hidden="true"></div><div class="shell difference-inner"><h2>From “Where You Are” to<br><em>“Where You Want to Be”</em></h2><p class="difference-quote-tail">A Roadmap for Doctors</p></div><svg class="difference-doctor" viewBox="0 0 430 520" aria-hidden="true"><g><rect x="20" y="28" width="165" height="115" rx="12"/><path d="M44 104l34-31 29 19 43-42M48 54h45M207 63h118M207 92h88M207 121h132"/><circle cx="306" cy="208" r="49"/><path d="M282 202c18-24 49-23 64 3M287 221c14 17 39 19 54 0M301 254v38l-58 31-41 174M322 254v38l60 33 31 172M244 323l72 43 67-41M316 366v132M263 374l-18 124M368 374l19 124M276 301c5 44 77 45 84 0"/><path d="M263 285c-23 5-41 22-49 49M359 285c25 5 42 21 49 49"/></g></svg></section>`; }
-function faq(isDoctor=false) {
-  const investorQs = [
-    ['What exactly do I receive for ₹999?','You receive a personalised Financial Fitness Score, a 9-page report, three priority actions and a 45-minute expert review.'],
-    ['How much time does the assessment take?','The initial assessment takes around four minutes to complete.'],
-    ['Is my information kept confidential?','Your financial information is handled privately for the purpose of preparing your Financial Fitness Checkup.'],
-    ['Will you calculate my FI number and required yearly investment?',"Yes. You'll get your target corpus and the yearly fresh investment needed to reach it."],
-    ['What is Finnovative?','We are a SEBI-registered, tech-enabled wealth management firm (SEBI Registration Number: INA000010996), operating since 2007 and managing assets for thousands of families across India and globally.'],
-    ['Do i need to prepare a lot of documents before starting?','You begin with a short assessment. You can also download the Finnovate app to share the complete financial picture with us, before the call. This will make the analysis more in-depth and faster.']
-  ];
-  const doctorQs = [
-    ['What exactly do I receive for ₹999?','You receive a personalised Financial Fitness Score, a 9-page report, three priority actions and a 45-minute expert review.'],
-    ['How much time does the assessment take?','The initial assessment takes around four minutes to complete.'],
-    ['Is my information kept confidential?','Your financial information is handled privately for the purpose of preparing your Financial Fitness Checkup.'],
-    ['Do I need to prepare a lot of documents before starting?','You begin with a short assessment. You can also download the Finnovate app to share the complete financial picture with us, before the call. This will make the analysis more in-depth and faster.'],
-    ['What is Finnovate?','We are a SEBI-registered, tech-enabled wealth management firm (SEBI Registration Number: INA000010996), operating since 2007 and managing assets for thousands of families across India and globally.'],
-    ['What if I already have an advisor or a bank RM?','This checkup acts as a brilliant second opinion. Many clients discover hidden fees or inadequate insurance that their bank RMs missed.']
-  ];
-  const qs = isDoctor ? doctorQs : investorQs;
-  const prefix = isDoctor ? 'doctor' : 'investor';
-  const section = `<section class="faq shell plain-faq faq-${prefix}"><div class="faq-copy"><h2>Clarity starts with a good question.</h2></div><div class="faq-list">${qs.map((q,i)=>`<article class="faq-item"><button type="button" aria-expanded="false" aria-controls="${prefix}-faq-answer-${i}">${q[0]}<span aria-hidden="true">${ICONS.plus}</span></button><p id="${prefix}-faq-answer-${i}">${q[1]}</p></article>`).join('')}</div></section>`;
-  return isDoctor ? doctorDifference() + section : section;
-}
-function chatbot() { return `<div class="chat-wrap"><div class="chat-pop"><button class="chat-x" aria-label="Close chat">${ICONS.close}</button><p><b>Need a quick answer?</b><br>Ask about the checkup, pricing or how Finnovate works.</p><div class="quick-questions"><button>What do I get?</button><button>Is it really unbiased?</button></div></div><button class="chat-button" aria-label="Open chat"><span>${ICONS.chat}</span><i></i></button></div>`; }
-function modal(theme) {
-  const investorOptions = ['I want the ₹999 checkup','I have questions before I book','A specific question about my money','Ongoing financial advice','Something else'];
-  const doctorOptions = ['I want the ₹999 checkup','I have questions before I book','I am looking for ongoing advice','Ongoing advice for my practice and family','Something else'];
-  const options = theme === 'investor' ? investorOptions : doctorOptions;
-  const enquiryLabel = theme === 'investor' ? 'What would you like us to look at?' : "What's on your mind?";
-  return `<dialog class="modal"><button class="modal-close" aria-label="Close">${ICONS.close}</button><h2>A clear next step<br>starts here.</h2><form><label>Your name<input placeholder="Dr. / Mr. / Ms. Name" required></label><label>Email address<input type="email" placeholder="you@example.com" required></label><div class="modal-field"><span class="modal-field-label">${enquiryLabel}</span><div class="custom-select" data-custom-select><button class="custom-select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="enquiry-options"><span>What would you like us to look at?</span><i aria-hidden="true"></i></button><div class="custom-select-menu" id="enquiry-options" role="listbox" aria-label="${enquiryLabel}" hidden>${options.map(option=>`<button class="custom-select-option" type="button" role="option" aria-selected="false" data-value="${option}"><span>${option}</span><i aria-hidden="true">✓</i></button>`).join('')}</div><input class="custom-select-value" type="hidden" name="enquiry" value=""></div></div><button class="button primary" type="submit">Request a callback</button><p class="form-note">Demo form only. No information is submitted.</p></form></dialog>`;
-}
 
 function bindInteractions() {
   $$('button:not(.doctor-pillar)').forEach(button => {
@@ -581,10 +420,40 @@ function bindInteractions() {
     addEventListener('scroll', () => { if (!doctorFrame) doctorFrame = requestAnimationFrame(updateDoctorDepth); }, {passive:true});
     addEventListener('resize', updateDoctorDepth);
   }
+  const naSteps = $$('.next-action-step');
+  if (naSteps.length) {
+    const naCard = $('.next-actions-card');
+    const naReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    $$('.na-art').forEach(art => art.classList.add('is-armed'));
+    // card-level: drives the desktop sand loop, and stops it off-screen or on a hidden tab
+    new IntersectionObserver(entries => entries.forEach(entry => naCard.classList.toggle('is-onscreen', entry.isIntersecting)), {threshold:.15}).observe(naCard);
+    document.addEventListener('visibilitychange', () => { if (document.hidden) naCard.classList.remove('is-onscreen'); });
+    // one-shot: trace the line art in on arrival. Generous threshold so a step that never
+    // crosses the midline (deep link, restored scroll) still draws instead of staying blank.
+    const drawObserver = new IntersectionObserver(entries => entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('has-drawn'); drawObserver.unobserve(entry.target); } }), {threshold:.25});
+    naSteps.forEach(step => drawObserver.observe(step));
+    // re-triggering: exactly one step is live - whichever sits nearest the viewport midline.
+    // The band is deliberately wide (not a zero-height '-50% 0px -50%' root, which reports the
+    // wrong element); exclusivity comes from picking a single winner, not from the geometry.
+    if (!naReduced) {
+      const naActive = new Set();
+      let naFrame;
+      const pickLive = () => {
+        naFrame = null;
+        let winner = null, best = Infinity;
+        naActive.forEach(step => { const rect = step.getBoundingClientRect(); const distance = Math.abs(rect.top + rect.height / 2 - innerHeight / 2); if (distance < best) { best = distance; winner = step; } });
+        naSteps.forEach(step => step.classList.toggle('is-live', step === winner));
+      };
+      const naLive = new IntersectionObserver(entries => { entries.forEach(entry => entry.isIntersecting ? naActive.add(entry.target) : naActive.delete(entry.target)); pickLive(); }, {rootMargin:'-40% 0px -40% 0px', threshold:0});
+      naSteps.forEach(step => naLive.observe(step));
+      addEventListener('scroll', () => { if (naActive.size && !naFrame) naFrame = requestAnimationFrame(pickLive); }, {passive:true});
+    }
+  }
   const observer = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('in-view'); observer.unobserve(e.target); } }), {threshold:.12}); $$('.reveal, .reveal-scale, .pillar-card, .deliverables article, .timeline article').forEach(x=>observer.observe(x));
   const score = $('[data-live-score]');
   if (score) { let value = 61, direction = 1; setInterval(() => { value += direction; if (value >= 76 || value <= 61) direction *= -1; score.textContent = value; }, 180); }
 }
-document.documentElement.dataset.theme = localStorage.getItem('finnovate-theme') || 'light';
-const page = location.pathname.toLowerCase().includes('investor') ? investorPage() : doctorPage();
-$('#app').innerHTML = page; bindInteractions();
+
+// Markup is already in the DOM (server-rendered); just wire up the behaviour.
+// The theme is applied in <head> before first paint to avoid a flash.
+bindInteractions();

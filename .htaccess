@@ -1,0 +1,18 @@
+# Finnovate — routing for the PHP build.
+# Mirrors the old vercel.json rewrites: /doctors and /investors both render index.php,
+# which picks the page from the request path exactly as app.js used to do from location.pathname.
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Serve real files and directories as-is (assets, css, js).
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Everything else goes to the front controller.
+    RewriteRule ^(doctors|investors)/?$ index.php [L]
+    RewriteRule ^$ index.php [L]
+</IfModule>
+
+DirectoryIndex index.php index.html
