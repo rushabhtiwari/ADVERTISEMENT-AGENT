@@ -9,6 +9,7 @@ a,button,input,select { -webkit-tap-highlight-color: transparent; }
 button,a { outline-offset: 5px; }button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { outline: 2px solid #43cf7c; outline-offset: 4px; }
 img,svg { backface-visibility: hidden; }
 .hero h1,.section-heading h2,.quiet-hook h2,.split-section h2,.unbiased h2,.offer h2,.faq h2,.doctor-journey h2,.advantage-phone h2 { text-wrap: balance; }
+.hero.investor h1 { font-size: 58px; }
 .nav,.button,.text-link,.logo,.review-controls button,.review-nav button,.chat-button,.quick-questions button,.faq-item button { transition-timing-function: var(--premium-fast); }
 .button { transform: translateZ(0); box-shadow: 0 11px 28px rgba(0,147,86,.15),inset 0 1px 0 rgba(255,255,255,.2); }
 .button:active { transform: translateY(-1px) scale(.975); }
